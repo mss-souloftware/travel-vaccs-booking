@@ -8,12 +8,12 @@
 
 function createAllTables(){
     global $wpdb;
-    $ctp_registered = "ctp_registered"; 
-    if(get_option($ctp_registered) != null){
+    $cvb_registered = "cvb_registered"; 
+    if(get_option($cvb_registered) != null){
         return;
     } else { 
         try {  
-            $table_plugin = $wpdb->prefix . "custom_ticket_plugin"; 
+            $table_plugin = $wpdb->prefix . "custom_vaccination_plugin"; 
             $charset_collate = $wpdb->get_charset_collate();
            
             $createTablePlugin = "CREATE TABLE $table_plugin  (
@@ -39,18 +39,18 @@ function createAllTables(){
             error_log($erro->getMessage());
             return $erro;
         } 
-        add_option($ctp_registered, true);   
+        add_option($cvb_registered, true);   
     } 
 }
 
 function removeAllTables(){
     $optionsToDelette = [ 
-        "ctp_registered"
+        "cvb_registered"
     ];
 
     global $wpdb; 
 
-    $table_plugin = $wpdb->prefix . "custom_ticket_plugin";
+    $table_plugin = $wpdb->prefix . "custom_vaccination_plugin";
 
     try {
         $removal_pluginDatabase = "DROP TABLE IF EXISTS {$table_plugin}";

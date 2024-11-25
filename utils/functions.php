@@ -107,8 +107,8 @@ function update_vaccination_status() {
 
 function custom_plugin_menu() {
     add_menu_page(
-        'Vaccination Booking',         
-        'Vaccination Booking System',         
+        'Vaccs Booking',         
+        'Vaccs Booking',         
         'manage_options',        
         'cts-vaccs',       
         'custom_plugin_page',     

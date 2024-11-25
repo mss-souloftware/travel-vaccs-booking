@@ -16,8 +16,8 @@ function vaccination_frontend()
 <div class="formWrapper">
     <form id="ticketingSubmission">
         <div class="formControl">
-            <label for="task">Task</label>
-            <input id="task" type="text" name="task" placeholder="Task">
+            <label for="task">Your Name</label>
+            <input id="task" type="text" name="task" placeholder="Your Name">
         </div>
 
         <div class="formControl">
@@ -46,7 +46,7 @@ function vaccination_frontend()
         </div>
 
         <div class="formSubmit">
-            <input type="submit" value="Pay & Submit Request">
+            <input type="submit" value="Submit Request">
         </div>
 
     </form>
