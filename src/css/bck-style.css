@@ -1,0 +1,79 @@
+.accordion-item {
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.accordion-header {
+  background-color: #f1f1f1;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  font-size: 1.1em;
+  border: none;
+  outline: none;
+}
+.accordion-content {
+  padding: 10px;
+  display: none;
+}
+
+.accordion-header .column-primary button {
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
+}
+.accordion-header .column-primary button strong {
+  color: #2271b1 !important;
+  font-weight: bold !important;
+  text-decoration: underline !important ;
+}
+
+.accordion-content .columnRow {
+  display: flex;
+}
+
+.accordion-content .columnRow .columnData {
+  padding: 20px;
+}
+
+.accordion-content .columnRow .columnData:last-child {
+  margin-left: 50px;
+}
+
+#deletThisTicket {
+  background: #f74f4f;
+  border: 0px;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-status-ticket {
+  background: #61ba61;
+  border: 0px;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.buttonColumns {
+  margin-top: 20px;
+}
+
+.paymentStatus {
+  padding: 2px 10px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.paymentStatus.status-0 {
+  background: #e6c108;
+}
+
+.paymentStatus.status-1 {
+  background: #21833f;
+}
+.paymentStatus.status-2 {
+  background: #e60835;
+}
