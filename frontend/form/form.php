@@ -18,18 +18,21 @@ function vaccination_frontend()
     <div class="row justify-content-center">
         <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2 id="heading">Sign Up Your User Account</h2>
-                <p>Fill all form field to go to next step</p>
                 <form id="msform">
-                   
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
-                                <div class="col-7">
-                                    <h2 class="fs-title">Account Information:</h2>
+                                <div class="col-12 text-center">
+                                    <h2 class="fs-title">Which service do you require?</h2>
                                 </div>
-                                <div class="col-5">
-                                    <h2 class="steps">Step 1 - 4</h2>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h2 class="fs-title">Which service do you require?</h2>
                                 </div>
                             </div> <label class="fieldlabels">Email: *</label> <input type="email" name="email"
                                 placeholder="Email Id" /> <label class="fieldlabels">Username: *</label> <input
@@ -42,11 +45,8 @@ function vaccination_frontend()
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
-                                <div class="col-7">
+                                <div class="col-12">
                                     <h2 class="fs-title">Personal Information:</h2>
-                                </div>
-                                <div class="col-5">
-                                    <h2 class="steps">Step 2 - 4</h2>
                                 </div>
                             </div> <label class="fieldlabels">First Name: *</label> <input type="text" name="fname"
                                 placeholder="First Name" /> <label class="fieldlabels">Last Name: *</label> <input
@@ -60,11 +60,8 @@ function vaccination_frontend()
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
-                                <div class="col-7">
+                                <div class="col-12">
                                     <h2 class="fs-title">Image Upload:</h2>
-                                </div>
-                                <div class="col-5">
-                                    <h2 class="steps">Step 3 - 4</h2>
                                 </div>
                             </div> <label class="fieldlabels">Upload Your Photo:</label> <input type="file" name="pic"
                                 accept="image/*"> <label class="fieldlabels">Upload Signature Photo:</label> <input
@@ -75,11 +72,8 @@ function vaccination_frontend()
                     <fieldset>
                         <div class="form-card">
                             <div class="row">
-                                <div class="col-7">
+                                <div class="col-12">
                                     <h2 class="fs-title">Finish:</h2>
-                                </div>
-                                <div class="col-5">
-                                    <h2 class="steps">Step 4 - 4</h2>
                                 </div>
                             </div> <br><br>
                             <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
