@@ -29,7 +29,11 @@ add_action('admin_enqueue_scripts', 'clt_admin_style');
 // Frontend Scripts
 function vaccination_frontend_script() { 
     wp_enqueue_script( 'frontenScript', plugins_url( '../src/js/script.js', __FILE__ ), ['jquery'], null, true ); 
-    wp_enqueue_style( 'frontenStyle', plugins_url( '../src/css/style.css', __FILE__ ), array(), false );
+    
+    
+    wp_enqueue_style( 'frontendBootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false );
+    wp_enqueue_style( 'frontendFontAwesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css', array(), false );
+    wp_enqueue_style( 'frontendStyle', plugins_url( '../src/css/style.css', __FILE__ ), array(), false );
    
     wp_localize_script( 'frontenScript', 'ajax_variables', array(
       'ajax_url'       => admin_url( 'admin-ajax.php' ),
