@@ -201,3 +201,48 @@
   width: 100%;
   object-fit: cover;
 }
+
+.firstStep .typeCard {
+  border: 1px solid #000;
+  height: 100%;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.bottomText {
+  margin: 50px 0;
+}
+
+.bottomText p {
+  margin: 0;
+}
+
+.thirdStep ul li .item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.thirdStep ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.thirdStep ul li .item {
+  padding: 20px;
+  max-width: 600px;
+  border-bottom: 1px solid #000;
+}
+
+.thirdStep ul li .item .meta svg {
+  width: 20px;
+}
+
+.thirdStep ul li .item label {
+  width: 50px;
+}
+
+.thirdStep ul li .item label input {
+  width: 30px;
+  height: 30px;
+}
