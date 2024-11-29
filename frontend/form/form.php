@@ -221,66 +221,192 @@ function vaccination_frontend()
                             <input type="button" name="next" class="next action-button" value="Next" /> <input type="button"
                                 name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
-                        <fieldset>
+                        <fieldset class="fourthStep">
                             <div class="form-card">
                                 <div class="row">
                                     <div class="col-12 text-center">
-                                        <h2 class="fs-title">Which service do you require?</h2>
+                                        <h2 class="fs-title">Select time</h2>
+                                        <p>
+                                            CityDoc - London Bridge
+                                        </p>
                                     </div>
-                                </div> <label class="fieldlabels">Email: *</label> <input type="email" name="email"
-                                    placeholder="Email Id" /> <label class="fieldlabels">Username: *</label> <input
-                                    type="text" name="uname" placeholder="UserName" /> <label class="fieldlabels">Password:
-                                    *</label> <input type="password" name="pwd" placeholder="Password" /> <label
-                                    class="fieldlabels">Confirm Password: *</label> <input type="password" name="cpwd"
-                                    placeholder="Confirm Password" />
+                                </div>
+
+                                <div class="slots" bis_skin_checked="1">
+                                    <div class="group" data-clinic-id="150" style="" bis_skin_checked="1">
+
+                                        <div class="item" data-slots-all="4" data-slots-morning="3" data-slots-afternoon="1"
+                                            data-slots-evening="0" data-slots-weekend="0" bis_skin_checked="1">
+                                            <div class="name" bis_skin_checked="1">Monday 2nd of December 2024</div>
+
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-02T10:10:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">10:10</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-02T10:40:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">10:40</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-02T11:10:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">11:10</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;afternoon&quot;]">
+                                                <input type="radio" name="time" value="2024-12-02T14:20:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">14:20</span>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="item" data-slots-all="8" data-slots-morning="3" data-slots-afternoon="4"
+                                            data-slots-evening="1" data-slots-weekend="0" bis_skin_checked="1">
+                                            <div class="name" bis_skin_checked="1">Tuesday 3rd of December 2024</div>
+
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T09:00:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">09:00</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T10:00:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">10:00</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;morning&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T10:30:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">10:30</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;afternoon&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T14:00:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">14:00</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;afternoon&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T14:30:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">14:30</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;afternoon&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T15:00:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">15:00</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;afternoon&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T15:30:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">15:30</span>
+                                            </label>
+
+                                            <label class="slot" data-intervals="[&quot;evening&quot;]">
+                                                <input type="radio" name="time" value="2024-12-03T16:00:00.0000000+00:00"
+                                                    class="check-custom">
+                                                <span class="pill-checked">16:00</span>
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
                             <input type="button" name="next" class="next action-button" value="Next" /> <input type="button"
                                 name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
-                        <fieldset>
+                        <fieldset class="finalStep">
                             <div class="form-card">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h2 class="fs-title">Personal Information:</h2>
+                                        <h2 class="fs-title">Confirmation</h2>
+                                        <p>
+                                            Please double check your appointment before confirming.
+                                            <br>
+                                            Please fill out your details, any other people’s details will be recorded in
+                                            clinics.
+                                        </p>
                                     </div>
-                                </div> <label class="fieldlabels">First Name: *</label> <input type="text" name="fname"
-                                    placeholder="First Name" /> <label class="fieldlabels">Last Name: *</label> <input
-                                    type="text" name="lname" placeholder="Last Name" /> <label class="fieldlabels">Contact
-                                    No.: *</label> <input type="text" name="phno" placeholder="Contact No." /> <label
-                                    class="fieldlabels">Alternate Contact No.: *</label> <input type="text" name="phno_2"
-                                    placeholder="Alternate Contact No." />
-                            </div> <input type="button" name="next" class="next action-button" value="Next" /> <input
-                                type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                        </fieldset>
-                        <fieldset>
-                            <div class="form-card">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h2 class="fs-title">Image Upload:</h2>
+                                </div>
+                                <div class="formRow">
+                                    <div class="formCol">
+                                        <label class="fieldlabels">First Name: *</label>
+                                        <input type="text" name="fname" placeholder="First Name" />
                                     </div>
-                                </div> <label class="fieldlabels">Upload Your Photo:</label> <input type="file" name="pic"
-                                    accept="image/*"> <label class="fieldlabels">Upload Signature Photo:</label> <input
-                                    type="file" name="pic" accept="image/*">
-                            </div> <input type="button" name="next" class="next action-button" value="Submit" /> <input
-                                type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                        </fieldset>
-                        <fieldset>
-                            <div class="form-card">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h2 class="fs-title">Finish:</h2>
+                                    <div class="formCol">
+                                        <label class="fieldlabels">Last Name: *</label>
+                                        <input type="text" name="lname" placeholder="Last Name" />
                                     </div>
-                                </div> <br><br>
-                                <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
-                                <div class="row justify-content-center">
-                                    <div class="col-3"> <img src="https://i.imgur.com/GwStPmg.png" class="fit-image"> </div>
-                                </div> <br><br>
-                                <div class="row justify-content-center">
-                                    <div class="col-7 text-center">
-                                        <h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
+                                </div>
+                                <div class="formRow">
+                                    <div class="formCol">
+                                        <label class="fieldlabels">Email *</label>
+                                        <input type="email" name="email" placeholder="Email" />
+                                    </div>
+                                    <div class="formCol">
+                                        <label class="fieldlabels">Confrim Email *</label>
+                                        <input type="email" name="cemail" placeholder="Confrim Email" />
+                                    </div>
+                                </div>
+                                <div class="formRow">
+                                    <div class="formColFull">
+                                        <label class="fieldlabels">Mobile *</label>
+                                        <input type="number" name="mobile" placeholder="Mobile" />
+                                    </div>
+                                </div>
+
+                                <div class="formRow">
+                                    <div class="formCol">
+                                        <label class="fieldlabels">
+                                            Street Address *</label>
+                                        <input type="text" name="address" placeholder="Street Address" />
+                                    </div>
+                                    <div class="formCol">
+                                        <label class="fieldlabels">
+                                            Address Line 2 *</label>
+                                        <input type="text" name="address2" placeholder="Address Line 2" />
+                                    </div>
+                                </div>
+
+                                <div class="formRow">
+                                    <div class="formColThree">
+                                        <label class="fieldlabels">
+                                            City *</label>
+                                        <input type="text" name="city" placeholder="City" />
+                                    </div>
+                                    <div class="formColThree">
+                                        <label class="fieldlabels">
+                                            Country *</label>
+                                        <input type="text" name="country" placeholder="Country" />
+                                    </div>
+                                    <div class="formColThree">
+                                        <label class="fieldlabels">
+                                            Postal Code *</label>
+                                        <input type="text" name="postal" placeholder="Postal Code" />
+                                    </div>
+                                </div>
+
+                                <div class="formRow">
+                                    <div class="formColFull">
+                                        <label class="fieldlabels">Comment</label>
+                                        <textarea name="comment" placeholder="Write your comment here."></textarea>
                                     </div>
                                 </div>
                             </div>
+                            <input type="submit" name="next" class="next action-button" value="Next" />
                         </fieldset>
                     </form>
                 </div>
