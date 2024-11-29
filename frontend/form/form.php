@@ -406,7 +406,7 @@ function vaccination_frontend()
                                     </div>
                                 </div>
                             </div>
-                            <input type="submit" name="next" class="next action-button" value="Next" />
+                            <input type="submit" name="next" class="action-button" value="Next" />
                         </fieldset>
                     </form>
                 </div>
