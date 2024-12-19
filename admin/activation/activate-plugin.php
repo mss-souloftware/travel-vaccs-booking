@@ -18,17 +18,24 @@ function createAllTables(){
            
             $createTablePlugin = "CREATE TABLE $table_plugin  (
                 id int(11) NOT NULL AUTO_INCREMENT,
-                task varchar(150) NOT NULL,
-                selectedDate date NOT NULL,
+                vccsType varchar(150) NOT NULL,
+                persons varchar(150) NOT NULL,
                 selectedTime time NOT NULL,
-                userAddress varchar(150) NOT NULL,
+                ClinicLoc varchar(150) NOT NULL,
+                schedule varchar(150) NOT NULL,
+                fname varchar(150) NOT NULL,
+                lname varchar(150) NOT NULL,
                 email varchar(150) NOT NULL,
                 phone int(11) NOT NULL,
-                googleLocation varchar(150) NOT NULL,
-                nonce varchar(50) NOT NULL,
-                paymentStatus varchar(50) NOT NULL DEFAULT 0,
+                sAddress varchar(150) NOT NULL,
+                address2 varchar(150) NOT NULL,
+                city varchar(150) NOT NULL,
+                country varchar(150) NOT NULL,
+                postal varchar(150) NOT NULL,
+                comment varchar(150) NOT NULL,
+                submissionStatus varchar(150) NOT NULL,
                 currentDate timestamp NOT NULL DEFAULT current_timestamp(),
-                price float(10,2) NOT NULL,
+                nonce varchar(50) NOT NULL,
                 PRIMARY KEY  (id)
             ) $charset_collate;";
          

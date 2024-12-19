@@ -9,8 +9,8 @@
       setProgressBar(current);
 
       $(".next").click(function () {
-        current_fs = $(this).parent();
-        next_fs = $(this).parent().next();
+        current_fs = $(this).parents("fieldset");
+        next_fs = $(this).parents("fieldset").next();
 
         //Add Class Active
         $("#progressbar li")
@@ -40,8 +40,8 @@
       });
 
       $(".previous").click(function () {
-        current_fs = $(this).parent();
-        previous_fs = $(this).parent().prev();
+        current_fs = $(this).parents("fieldset");
+        previous_fs = $(this).parents("fieldset").prev();
 
         //Remove class active
         $("#progressbar li")
