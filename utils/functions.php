@@ -109,24 +109,225 @@ function update_vaccination_status() {
 }
 
 
+add_action('init', 'cts_vaccs_register_locations');
+function cts_vaccs_register_locations() {
+    $labels = [
+        'name'               => 'Locations',
+        'singular_name'      => 'Location',
+        'menu_name'          => 'Locations',
+        'name_admin_bar'     => 'Location',
+        'add_new'            => 'Add New',
+        'add_new_item'       => 'Add New Location',
+        'edit_item'          => 'Edit Location',
+        'view_item'          => 'View Location',
+        'all_items'          => 'All Locations',
+        'search_items'       => 'Search Locations',
+        'not_found'          => 'No locations found.',
+        'not_found_in_trash' => 'No locations found in Trash.',
+    ];
+
+    $args = [
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => false,
+        'query_var'          => true,
+        'rewrite'            => ['slug' => 'locations'],
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'supports'           => ['title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'],
+    ];
+
+    register_post_type('locations', $args);
+}
+
+
 function custom_plugin_menu() {
     add_menu_page(
-        'Vaccs Booking',         
-        'Vaccs Booking',         
-        'manage_options',        
-        'cts-vaccs',       
-        'custom_plugin_page',     
+        'Vaccs Booking',       
+        'Vaccs Booking',        
+        'manage_options',     
+        'cts-vaccs',            
+        'custom_plugin_page',    
         'dashicons-admin-generic',
-        6                         
+        6                        
+    );
+       
+    add_submenu_page(
+        'cts-vaccs',             
+        'Manage Locations',     
+        'Locations',            
+        'manage_options',    
+        'edit.php?post_type=locations',
+        null                     
     );
 
-    // Add submenu pages
     add_submenu_page(
-        'cts-vaccs',        
-        'Settings Page',         
+        'cts-vaccs',            
         'Settings',              
+        'Settings',             
         'manage_options',        
-        'cts-vaccs-payment',
-        'custom_plugin_settings'  
+        'cts-vaccs-payment',    
+        'custom_plugin_settings'
     );
+}
+
+
+// Add Meta Box to Locations Post Type
+add_action('add_meta_boxes', 'add_days_time_range_meta_box');
+function add_days_time_range_meta_box() {
+    add_meta_box(
+        'days_time_range_meta_box',  // ID
+        'Time Slots Settings',       // Title
+        'render_days_time_range_meta_box', // Callback
+        'locations',                 // Post type
+        'normal',                    // Context
+        'default'                    // Priority
+    );
+}
+
+// Render the Meta Box to Select Days and Time Range
+function render_days_time_range_meta_box($post) {
+    // Retrieve the existing values
+    $days = get_post_meta($post->ID, 'days', true);
+    $start_time = get_post_meta($post->ID, 'start_time', true);
+    $end_time = get_post_meta($post->ID, 'end_time', true);
+    $slot_duration = get_post_meta($post->ID, 'slot_duration', true);
+    
+    // Default values
+    if (!$days) $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    if (!$slot_duration) $slot_duration = 30; // Default to 30 minutes
+    
+    wp_nonce_field('save_days_time_range_meta_box', 'days_time_range_nonce');
+    ?>
+<div>
+    <label for="days">Select Days:</label><br>
+    <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
+    Monday
+    <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
+    Tuesday
+    <input type="checkbox" name="days[]" value="wednesday"
+        <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
+    <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
+    Thursday
+    <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
+    Friday
+    <input type="checkbox" name="days[]" value="saturday"
+        <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
+    <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
+    Sunday
+</div>
+
+
+<div>
+    <label for="start_time">Start Time:</label>
+    <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
+</div>
+
+<div>
+    <label for="end_time">End Time:</label>
+    <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
+</div>
+
+<div>
+    <label for="slot_duration">Slot Duration (minutes):</label>
+    <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
+        required />
+</div>
+<?php
+}
+
+// Save the Meta Box Data
+add_action('save_post', 'save_days_time_range_meta_box');
+function save_days_time_range_meta_box($post_id) {
+    // Check nonce
+    if (!isset($_POST['days_time_range_nonce']) || !wp_verify_nonce($_POST['days_time_range_nonce'], 'save_days_time_range_meta_box')) {
+        return;
+    }
+
+    // Avoid autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Save the selected days
+    if (isset($_POST['days'])) {
+        $days = array_map('sanitize_text_field', $_POST['days']);
+        update_post_meta($post_id, 'days', $days);
+    }
+
+    // Save start and end time
+    if (isset($_POST['start_time'])) {
+        $start_time = sanitize_text_field($_POST['start_time']);
+        update_post_meta($post_id, 'start_time', $start_time);
+    }
+
+    if (isset($_POST['end_time'])) {
+        $end_time = sanitize_text_field($_POST['end_time']);
+        update_post_meta($post_id, 'end_time', $end_time);
+    }
+
+    // Save slot duration
+    if (isset($_POST['slot_duration'])) {
+        $slot_duration = intval($_POST['slot_duration']);
+        update_post_meta($post_id, 'slot_duration', $slot_duration);
+    }
+}
+
+
+// Function to generate time slots based on the selected days, start time, end time, and slot duration
+function generate_time_slots($post_id) {
+    $days = get_post_meta($post_id, 'days', true);
+    $start_time = get_post_meta($post_id, 'start_time', true);
+    $end_time = get_post_meta($post_id, 'end_time', true);
+    $slot_duration = get_post_meta($post_id, 'slot_duration', true);
+
+    $time_slots = [];
+    
+    // Loop over the selected days and generate time slots
+    foreach ($days as $day) {
+        $start = new DateTime($start_time);
+        $end = new DateTime($end_time);
+        
+        // Generate slots for the day
+        while ($start < $end) {
+            $time_slots[$day][] = $start->format('H:i');
+            $start->modify("+$slot_duration minutes");
+        }
+    }
+
+    return $time_slots;
+}
+
+// Example usage: To get the generated time slots for a location
+$location_id = 123; // Replace with your location post ID
+$generated_slots = generate_time_slots($location_id);
+
+
+// Save generated time slots
+// function save_days_time_range_meta_box($post_id) {
+//     // Check nonce and save process...
+    
+//     // After saving days, start time, end time, and slot duration, generate time slots
+//     $time_slots = generate_time_slots($post_id);
+//     update_post_meta($post_id, 'time_slots', $time_slots);
+// }
+
+
+// Display the time slots in the admin (e.g., in the custom meta box or elsewhere)
+function display_time_slots($post) {
+    $time_slots = get_post_meta($post->ID, 'time_slots', true);
+    
+    if ($time_slots) {
+        echo '<h3>Generated Time Slots</h3>';
+        echo '<ul>';
+        foreach ($time_slots as $day => $slots) {
+            echo '<li>' . ucfirst($day) . ': ' . implode(', ', $slots) . '</li>';
+        }
+        echo '</ul>';
+    } else {
+        echo '<p>No time slots generated for this location.</p>';
+    }
 }
