@@ -331,3 +331,88 @@ function display_time_slots($post) {
         echo '<p>No time slots generated for this location.</p>';
     }
 }
+
+
+add_action('wp_ajax_fetch_slots', 'fetch_slots');
+add_action('wp_ajax_nopriv_fetch_slots', 'fetch_slots');
+
+function fetch_slots() {
+    check_ajax_referer('my-ajax-nonce', 'nonce');
+
+    $location_id = intval($_POST['location_id']);
+    $post = get_post($location_id);
+
+    if (!$post || $post->post_type !== 'locations') {
+        wp_send_json_error(['message' => 'Invalid location ID.']);
+    }
+
+    // Fetch custom fields
+    $start_time = get_post_meta($post->ID, 'start_time', true);
+    $end_time = get_post_meta($post->ID, 'end_time', true);
+    $slot_duration = get_post_meta($post->ID, 'slot_duration', true);
+    $days = get_post_meta($post->ID, 'days', true); // Serialized array of selected days
+
+    // Unserialize the 'days' field to get an array of days
+    $days_array = maybe_unserialize($days);
+
+    // Convert custom fields to required format
+    $start = DateTime::createFromFormat('H:i', $start_time);
+    $end = DateTime::createFromFormat('H:i', $end_time);
+
+    if (!$start || !$end || !$slot_duration) {
+        wp_send_json_error(['message' => 'Incomplete slot data for this location.']);
+    }
+
+    // Calculate available slots only for selected days
+    $slots_data = [];
+    $today = new DateTime(); // Start from today's date
+
+    // Get current day index and days of the week
+    $days_of_week = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    $today_day_index = $today->format('w'); // Get current day as a number (0 = Sunday, 6 = Saturday)
+
+    // Generate the available days array, starting from the current day
+    $available_days = [];
+    foreach ($days_array as $day) {
+        if (in_array($day, $days_of_week)) {
+            $day_index = array_search($day, $days_of_week);
+            $day_difference = ($day_index - $today_day_index + 7) % 7; // Calculate days until the next occurrence of this day
+
+            // Add the day to available days if it's within the next 7 days
+            $available_days[] = [
+                'day' => $day,
+                'date' => (clone $today)->modify("+$day_difference days")->format('Y-m-d')
+            ];
+        }
+    }
+
+    // Sort available days in chronological order (starting from today)
+    usort($available_days, function($a, $b) {
+        return strtotime($a['date']) - strtotime($b['date']);
+    });
+
+    // Limit the output to the next 7 days (optimization)
+    $end_date = (clone $today)->modify('+7 days');
+    foreach ($available_days as $day_info) {
+        $current_time = clone $start;
+        $slots = [];
+        $current_day_date = new DateTime($day_info['date']);
+
+        // Calculate slots only for selected day and within the range
+        while ($current_time < $end) {
+            $slots[] = $current_time->format('H:i');
+            $current_time->modify("+{$slot_duration} minutes");
+        }
+
+        // Only add the slots for the days within the next 7 days
+        if ($current_day_date <= $end_date) {
+            $slots_data[] = [
+                'day' => $day_info['day'],
+                'date' => $day_info['date'],
+                'slots' => $slots
+            ];
+        }
+    }
+
+    wp_send_json_success(['slots' => $slots_data]);
+}

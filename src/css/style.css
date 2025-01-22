@@ -231,8 +231,17 @@
 .thirdStep ul li .item {
   padding: 20px;
   max-width: 600px;
-  border-bottom: 1px solid #000;
+  border: 1px solid #cccccc;
   margin: auto;
+  background: #fff;
+  box-shadow: 0 5px 10px #0000001c;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.thirdStep ul li .item.active {
+  background: #00c5a11c;
 }
 
 .thirdStep ul li .item .meta svg {
@@ -275,4 +284,40 @@
 
 .formRow .formColFull textarea {
   height: 200px;
+}
+
+.daySlotBox {
+  list-style: none;
+}
+
+.daySlotBox h2 {
+  text-transform: capitalize;
+  font-size: 24px;
+}
+
+.daySlotBox ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  gap: 15px;
+  flex-flow: wrap;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #bbbbbb;
+  padding-bottom: 20px;
+}
+.daySlotBox ul li {
+  padding: 8px 20px;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.daySlotBox ul li:hover {
+  background: #e3f9f5;
+}
+
+.daySlotBox ul li.active {
+  background: #00c5a1;
+  color: #fff;
 }

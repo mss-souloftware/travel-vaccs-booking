@@ -144,16 +144,16 @@ if ($postDetails) {
             $days_array = []; // Default to empty array
         }
         ?>
-
+                                        <?php /*
                                         <li>
                                             <p>Available Slots for <?php echo $post->post_title; ?>:</p>
-                                            <?php if ($start && $end && $slot_duration && $days_array) : ?>
-                                            <ul>
-                                                <?php foreach ($days_array as $day) : ?>
-                                                <li>
-                                                    <strong><?php echo $day; ?>:</strong>
-                                                    <ul>
-                                                        <?php
+                                        <?php if ($start && $end && $slot_duration && $days_array) : ?>
+                                        <ul>
+                                            <?php foreach ($days_array as $day) : ?>
+                                            <li>
+                                                <strong><?php echo $day; ?>:</strong>
+                                                <ul>
+                                                    <?php
                                 // Generate slots for the day
                                 $slots = [];
                                 $current_time = clone $start; // Clone the start time to avoid overwriting
@@ -162,16 +162,17 @@ if ($postDetails) {
                                     $current_time->modify("+{$slot_duration} minutes"); // Increment by slot duration
                                 }
                                 ?>
-                                                        <?php foreach ($slots as $slot) : ?>
-                                                        <li><?php echo $slot; ?></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                            <?php else : ?>
-                                            <p>No slots available.</p>
-                                            <?php endif; ?>
+                                                    <?php foreach ($slots as $slot) : ?>
+                                                    <li><?php echo $slot; ?></li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                        <?php else : ?>
+                                        <p>No slots available.</p>
+                                        <?php endif; */     ?>
+                                        <li>
                                             <div class="item">
                                                 <div class="left" bis_skin_checked="1">
                                                     <div class="top" bis_skin_checked="1">
@@ -215,11 +216,12 @@ if ($postDetails) {
 
 
                                     </ul>
+                                    <input type="hidden" id="locationId">
                                 </div>
                             </div>
                         </div>
-                        <input type="button" name="next" class="next action-button" value="Next" /> <input type="button"
-                            name="previous" class="previous action-button-previous" value="Previous" />
+                        <input type="button" name="next" class="next action-button" value="Next" id="locationIdPass" />
+                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
                     <fieldset class="fourthStep">
                         <div class="form-card">
@@ -232,96 +234,8 @@ if ($postDetails) {
                                 </div>
                             </div>
 
-                            <div class="slots" bis_skin_checked="1">
-                                <div class="group" data-clinic-id="150" style="" bis_skin_checked="1">
-
-                                    <div class="item" data-slots-all="4" data-slots-morning="3" data-slots-afternoon="1"
-                                        data-slots-evening="0" data-slots-weekend="0" bis_skin_checked="1">
-                                        <div class="name" bis_skin_checked="1">Monday 2nd of December 2024</div>
-
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-02T10:10:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">10:10</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-02T10:40:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">10:40</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-02T11:10:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">11:10</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;afternoon&quot;]">
-                                            <input type="radio" name="time" value="2024-12-02T14:20:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">14:20</span>
-                                        </label>
-
-                                    </div>
-
-                                    <div class="item" data-slots-all="8" data-slots-morning="3" data-slots-afternoon="4"
-                                        data-slots-evening="1" data-slots-weekend="0" bis_skin_checked="1">
-                                        <div class="name" bis_skin_checked="1">Tuesday 3rd of December 2024</div>
-
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T09:00:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">09:00</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T10:00:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">10:00</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;morning&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T10:30:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">10:30</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;afternoon&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T14:00:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">14:00</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;afternoon&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T14:30:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">14:30</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;afternoon&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T15:00:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">15:00</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;afternoon&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T15:30:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">15:30</span>
-                                        </label>
-
-                                        <label class="slot" data-intervals="[&quot;evening&quot;]">
-                                            <input type="radio" name="time" value="2024-12-03T16:00:00.0000000+00:00"
-                                                class="check-custom">
-                                            <span class="pill-checked">16:00</span>
-                                        </label>
-
-                                    </div>
-
-                                </div>
+                            <div class="slots">
+                                <ul class="daySlotBox"></ul>
                             </div>
 
                         </div>

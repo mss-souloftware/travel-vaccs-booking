@@ -8,7 +8,7 @@
 
 function custom_plugin_page() { 
     global $wpdb;
-    $table_name = $wpdb->prefix . 'custom_ticket_plugin';
+    $table_name = $wpdb->prefix . 'custom_vaccination_plugin';
 
     // Fetch all rows from the custom ticket plugin table
     $results = $wpdb->get_results("SELECT * FROM $table_name");
@@ -114,6 +114,6 @@ function custom_plugin_page() {
 
 <?php 
     } else { 
-        echo '<p>No tickets found.</p>';
+        echo '<p>No bookings found.</p>';
     }
 }
