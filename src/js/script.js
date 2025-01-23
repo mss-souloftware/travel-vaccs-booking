@@ -1,5 +1,61 @@
 (function ($) {
   $(document).ready(function ($) {
+
+
+
+    $('#msform').on('submit', function (e) {
+      e.preventDefault(); // Prevent default form submission
+
+      // Gather form data
+      const formData = {
+        action: 'submit_vaccination_form',
+        nonce: $('input[name="nonce"]').val(),
+        vccsType: $('input[name="vccsType"]').val(),
+        persons: $('input[name="persons"]').val(),
+        locationId: $('input[name="locationId"]').val(),
+        schedule: $('input[name="schedule"]').val(),
+        fname: $('input[name="fname"]').val(),
+        lname: $('input[name="lname"]').val(),
+        email: $('input[name="email"]').val(),
+        phone: $('input[name="phone"]').val(),
+        sAddress: $('input[name="sAddress"]').val(),
+        address2: $('input[name="address2"]').val(),
+        city: $('input[name="city"]').val(),
+        country: $('input[name="country"]').val(),
+        postal: $('input[name="postal"]').val(),
+        comment: $('textarea[name="comment"]').val(),
+        submissionStatus: 'Pending',
+      };
+
+      // Make AJAX request
+      $.ajax({
+        url: ajax_variables.ajax_url, // WordPress global AJAX URL
+        type: 'POST',
+        data: formData,
+        beforeSend: function () {
+          console.log('Submitting...');
+        },
+        success: function (response) {
+          console.log('Response:', response); // Log the full response
+          if (response.success) {
+            alert(response.data.message);
+            $('#msform')[0].reset();
+          } else {
+            alert('Error: ' + (response.data?.message || 'Unknown error occurred.'));
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error:', status, error);
+          alert('An error occurred. Please try again.');
+        },
+        complete: function () {
+          console.log('Submission complete.');
+        },
+      });
+    });
+
+
+
     $(document).on("click", ".thirdStep ul li .item", function () {
       $(".thirdStep ul li .item").removeClass("active");
       $(this).addClass("active");
@@ -107,8 +163,8 @@
                               <h2>${day.day} ${day.date}</h2>
                               <ul class="timeSlots">
                                   ${day.slots
-                                    .map((slot) => `<li>${slot}</li>`)
-                                    .join("")}
+                    .map((slot) => `<li>${slot}</li>`)
+                    .join("")}
                               </ul>
                           </li>`;
               });
