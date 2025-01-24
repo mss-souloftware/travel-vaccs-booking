@@ -1,7 +1,33 @@
 (function ($) {
   $(document).ready(function ($) {
 
+    $(document.body).on("click", ".firstStep .typeCard", function () {
+      $(".firstStep .typeCard").removeClass("active");
+      $(this).addClass("active");
+      let vaccTypeVal = $(this).attr("data-id");
+      $("#vccsType").val(vaccTypeVal);
+    })
 
+    $(document.body).on("change", "#adults", function () {
+      if ($(this).val() != "") {
+        $("#adultsBtn").removeAttr("disabled");
+      }
+    })
+
+    $(document.body).on("click", ".thirdStep ul li .item", function () {
+      let locationTitle = $(this).find(".name").text();
+      $("#locationTItle").text(locationTitle)
+      if ($("locationId").val() != "") {
+        $("#locationIdPass").removeAttr("disabled");
+      }
+    })
+
+    $(document.body).on("click", ".daySlotBox .timeSlots li", function () {
+      $(".daySlotBox .timeSlots li").removeClass("active");
+      $(this).addClass("active");
+      $("#adultsBtn").removeAttr("disabled");
+      $("#schedule").val(`${$(this).text()},${$(this).attr("data-id")}`);
+    })
 
     $('#msform').on('submit', function (e) {
       e.preventDefault(); // Prevent default form submission
@@ -147,6 +173,9 @@
       let locationId = $("#locationId").val();
 
       if (locationId) {
+        // Show the loader
+        $("#loaderScreen").show();
+
         $.post(
           ajax_variables.ajax_url,
           {
@@ -160,13 +189,13 @@
 
               response.data.slots.forEach((day) => {
                 slotsHtml += `<li>
-                              <h2>${day.day} ${day.date}</h2>
-                              <ul class="timeSlots">
-                                  ${day.slots
-                    .map((slot) => `<li>${slot}</li>`)
+                                <h2>${day.day} ${day.date}</h2>
+                                <ul class="timeSlots">
+                                    ${day.slots
+                    .map((slot) => `<li data-id="${day.date}">${slot}</li>`)
                     .join("")}
-                              </ul>
-                          </li>`;
+                                </ul>
+                              </li>`;
               });
 
               $(".slots .daySlotBox").html(slotsHtml); // Update slots dynamically
@@ -174,10 +203,16 @@
               $(".slots .daySlotBox").html("<p>No slots available.</p>");
             }
           }
-        ).fail(function () {
-          $(".slots .daySlotBox").html("<p>An error occurred while fetching slots.</p>");
-        });
+        )
+          .fail(function () {
+            $(".slots .daySlotBox").html("<p>An error occurred while fetching slots.</p>");
+          })
+          .always(function () {
+            // Hide the loader when the request completes
+            $("#loaderScreen").hide();
+          });
       }
     });
+
   });
 })(jQuery);

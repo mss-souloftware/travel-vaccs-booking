@@ -91,8 +91,9 @@ function vaccination_frontend()
                                     </div>
                                 </div>
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Next" /> <input type="button"
-                                name="previous" class="previous action-button-previous" value="Previous" />
+                            <input type="button" name="next" class="next action-button" value="Next" id="adultsBtn"
+                                disabled /> <input type="button" name="previous" class="previous action-button-previous"
+                                value="Previous" />
                         </fieldset>
                         <fieldset class="thirdStep">
                             <div class="form-card">
@@ -146,33 +147,33 @@ function vaccination_frontend()
                                                     }
                                                     ?>
                                                     <?php /*
-                                                             <li>
-                                                                 <p>Available Slots for <?php echo $post->post_title; ?>:</p>
-                                                             <?php if ($start && $end && $slot_duration && $days_array) : ?>
-                                                             <ul>
-                                                                 <?php foreach ($days_array as $day) : ?>
-                                                                 <li>
-                                                                     <strong><?php echo $day; ?>:</strong>
-                                                                     <ul>
-                                                                         <?php
-                                                     // Generate slots for the day
-                                                     $slots = [];
-                                                     $current_time = clone $start; // Clone the start time to avoid overwriting
-                                                     while ($current_time < $end) {
-                                                         $slots[] = $current_time->format('H:i'); // Add slot
-                                                         $current_time->modify("+{$slot_duration} minutes"); // Increment by slot duration
-                                                     }
-                                                     ?>
-                                                                         <?php foreach ($slots as $slot) : ?>
-                                                                         <li><?php echo $slot; ?></li>
-                                                                         <?php endforeach; ?>
-                                                                     </ul>
-                                                                 </li>
-                                                                 <?php endforeach; ?>
-                                                             </ul>
-                                                             <?php else : ?>
-                                                             <p>No slots available.</p>
-                                                             <?php endif; */ ?>
+                                                                                  <li>
+                                                                                      <p>Available Slots for <?php echo $post->post_title; ?>:</p>
+                                                                                  <?php if ($start && $end && $slot_duration && $days_array) : ?>
+                                                                                  <ul>
+                                                                                      <?php foreach ($days_array as $day) : ?>
+                                                                                      <li>
+                                                                                          <strong><?php echo $day; ?>:</strong>
+                                                                                          <ul>
+                                                                                              <?php
+                                                                          // Generate slots for the day
+                                                                          $slots = [];
+                                                                          $current_time = clone $start; // Clone the start time to avoid overwriting
+                                                                          while ($current_time < $end) {
+                                                                              $slots[] = $current_time->format('H:i'); // Add slot
+                                                                              $current_time->modify("+{$slot_duration} minutes"); // Increment by slot duration
+                                                                          }
+                                                                          ?>
+                                                                                              <?php foreach ($slots as $slot) : ?>
+                                                                                              <li><?php echo $slot; ?></li>
+                                                                                              <?php endforeach; ?>
+                                                                                          </ul>
+                                                                                      </li>
+                                                                                      <?php endforeach; ?>
+                                                                                  </ul>
+                                                                                  <?php else : ?>
+                                                                                  <p>No slots available.</p>
+                                                                                  <?php endif; */ ?>
                                                     <li>
                                                         <div class="item">
                                                             <div class="left" bis_skin_checked="1">
@@ -183,17 +184,18 @@ function vaccination_frontend()
                                                                     <span
                                                                         class="wpsl-street"><?php echo $post->post_content; ?></span>
                                                                 </div>
-
-                                                                <div class="meta" bis_skin_checked="1">
-                                                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg"
-                                                                        viewBox="0 0 20 20">
-                                                                        <path
-                                                                            d="M19.7,3.3A1.1,1.1,0,0,0,19,3H16V1a1,1,0,0,0-2,0V3H6V1A1.1,1.1,0,0,0,5,0,1.1,1.1,0,0,0,4,1V3H1A1.1,1.1,0,0,0,0,4V19a1.1,1.1,0,0,0,1,1H19a1.1,1.1,0,0,0,1-1V4A.9.9,0,0,0,19.7,3.3ZM18,18H2V10H18ZM18,8H2V5H18Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                    <span class="slots-no">101</span> appointments available this
-                                                                    week
-                                                                </div>
+                                                                <?php /*
+                                                                       <div class="meta" bis_skin_checked="1">
+                                                                           <svg class="icon" xmlns="http://www.w3.org/2000/svg"
+                                                                               viewBox="0 0 20 20">
+                                                                               <path
+                                                                                   d="M19.7,3.3A1.1,1.1,0,0,0,19,3H16V1a1,1,0,0,0-2,0V3H6V1A1.1,1.1,0,0,0,5,0,1.1,1.1,0,0,0,4,1V3H1A1.1,1.1,0,0,0,0,4V19a1.1,1.1,0,0,0,1,1H19a1.1,1.1,0,0,0,1-1V4A.9.9,0,0,0,19.7,3.3ZM18,18H2V10H18ZM18,8H2V5H18Z">
+                                                                               </path>
+                                                                           </svg>
+                                                                           <span class="slots-no">101</span> appointments available this
+                                                                           week
+                                                                       </div>
+                                                                       */ ?>
                                                             </div>
                                                             <label>
                                                                 <input type="radio" name="location" value="<?php echo $post->ID; ?>"
@@ -221,16 +223,19 @@ function vaccination_frontend()
                                     </div>
                                 </div>
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Next" id="locationIdPass" />
+                            <input type="button" name="next" class="next action-button" value="Next" id="locationIdPass"
+                                disabled />
                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                         </fieldset>
                         <fieldset class="fourthStep">
+                            <div id="loaderScreen">
+                                <span class="loader"></span>
+                            </div>
                             <div class="form-card">
                                 <div class="row">
                                     <div class="col-12 text-center">
                                         <h2 class="fs-title">Select time</h2>
-                                        <p>
-                                            CityDoc - London Bridge
+                                        <p id="locationTItle">
                                         </p>
                                     </div>
                                 </div>
