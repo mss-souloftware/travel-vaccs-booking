@@ -16,7 +16,7 @@ function submit_vaccination_form()
     // Sanitize and prepare form data
     $data = [
         'vccsType' => sanitize_text_field($_POST['vccsType']),
-        'persons' => sanitize_text_field($_POST['persons']),
+        'persons' => sanitize_text_field($_POST['adults']),
         'locationId' => intval($_POST['locationId']),
         'schedule' => sanitize_text_field($_POST['schedule']),
         'fname' => sanitize_text_field($_POST['fname']),
@@ -29,7 +29,7 @@ function submit_vaccination_form()
         'country' => sanitize_text_field($_POST['country']),
         'postal' => sanitize_text_field($_POST['postal']),
         'comment' => sanitize_textarea_field($_POST['comment']),
-        'submissionStatus' => sanitize_text_field($_POST['submissionStatus']),
+        'paymentStatus' => sanitize_text_field($_POST['submissionStatus']),
         'nonce' => sanitize_text_field($_POST['nonce']),
     ];
 

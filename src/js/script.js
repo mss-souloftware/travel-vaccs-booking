@@ -37,7 +37,7 @@
         action: 'submit_vaccination_form',
         nonce: $('input[name="nonce"]').val(),
         vccsType: $('input[name="vccsType"]').val(),
-        persons: $('input[name="persons"]').val(),
+        persons: $('input[name="adults"]').val(),
         locationId: $('input[name="locationId"]').val(),
         schedule: $('input[name="schedule"]').val(),
         fname: $('input[name="fname"]').val(),
@@ -50,7 +50,7 @@
         country: $('input[name="country"]').val(),
         postal: $('input[name="postal"]').val(),
         comment: $('textarea[name="comment"]').val(),
-        submissionStatus: 'Pending',
+        paymentStatus: 0,
       };
 
       // Make AJAX request

@@ -36,6 +36,7 @@ function createAllTables()
                 comment varchar(150) NOT NULL,
                 submissionStatus varchar(150) NOT NULL,
                 currentDate timestamp NOT NULL DEFAULT current_timestamp(),
+                paymentStatus int(11) NOT NULL,
                 nonce varchar(50) NOT NULL,
                 PRIMARY KEY  (id)
             ) $charset_collate;";
