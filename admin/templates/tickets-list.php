@@ -49,7 +49,7 @@ function custom_plugin_page()
                                     } ?></strong>
                                 </button>
                             </td>
-                            <td><?php echo esc_html($row->persons); ?></td>
+                            <td><?php echo esc_html($row->adults); ?></td>
                             <td><?php echo esc_html(get_the_title($row->locationId)); ?></td>
                             <td><?php echo esc_html($row->fname) . ' ' . esc_html($row->lname); ?></td>
                             <td><?php echo esc_html($row->city); ?></td>
@@ -87,7 +87,7 @@ function custom_plugin_page()
                                             echo 'General Vaccination';
                                         }
                                         ?></p>
-                                        <p><strong>Persons:</strong> <?php echo esc_html($row->persons); ?></p>
+                                        <p><strong>Persons:</strong> <?php echo esc_html($row->adults); ?></p>
                                         <p><strong>Location:</strong> <?php echo esc_html(get_the_title($row->locationId)); ?></p>
                                         <p><strong>Schedule:</strong>
                                             <?php

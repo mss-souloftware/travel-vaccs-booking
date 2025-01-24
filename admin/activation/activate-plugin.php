@@ -21,7 +21,7 @@ function createAllTables()
             $createTablePlugin = "CREATE TABLE $table_plugin  (
                 id int(11) NOT NULL AUTO_INCREMENT,
                 vccsType varchar(150) NOT NULL,
-                persons varchar(150) NOT NULL,
+                adults varchar(150) NOT NULL,
                 locationId int(11) NOT NULL,
                 schedule varchar(150) NOT NULL,
                 fname varchar(150) NOT NULL,
@@ -34,7 +34,6 @@ function createAllTables()
                 country varchar(150) NOT NULL,
                 postal varchar(150) NOT NULL,
                 comment varchar(150) NOT NULL,
-                submissionStatus varchar(150) NOT NULL,
                 currentDate timestamp NOT NULL DEFAULT current_timestamp(),
                 paymentStatus int(11) NOT NULL,
                 nonce varchar(50) NOT NULL,

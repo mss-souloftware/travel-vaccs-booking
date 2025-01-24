@@ -37,7 +37,7 @@
         action: 'submit_vaccination_form',
         nonce: $('input[name="nonce"]').val(),
         vccsType: $('input[name="vccsType"]').val(),
-        persons: $('input[name="adults"]').val(),
+        adults: $('#adults').val(),
         locationId: $('input[name="locationId"]').val(),
         schedule: $('input[name="schedule"]').val(),
         fname: $('input[name="fname"]').val(),

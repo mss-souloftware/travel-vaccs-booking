@@ -277,22 +277,15 @@ function vaccination_frontend()
                                         <input type="email" name="email" placeholder="Email" />
                                     </div>
                                     <div class="formCol">
-                                        <label class="fieldlabels">Confrim Email *</label>
-                                        <input type="email" name="cemail" placeholder="Confrim Email" />
-                                    </div>
-                                </div>
-                                <div class="formRow">
-                                    <div class="formColFull">
                                         <label class="fieldlabels">Mobile *</label>
-                                        <input type="number" name="mobile" placeholder="Mobile" />
+                                        <input type="number" name="phone" placeholder="Mobile" />
                                     </div>
                                 </div>
-
                                 <div class="formRow">
                                     <div class="formCol">
                                         <label class="fieldlabels">
                                             Street Address *</label>
-                                        <input type="text" name="address" placeholder="Street Address" />
+                                        <input type="text" name="sAddress" placeholder="Street Address" />
                                     </div>
                                     <div class="formCol">
                                         <label class="fieldlabels">
