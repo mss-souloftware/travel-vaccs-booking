@@ -55,62 +55,76 @@ add_action('wp_ajax_submit_vaccination_form', 'submit_vaccination_form');
 add_action('wp_ajax_nopriv_submit_vaccination_form', 'submit_vaccination_form');
 
 
-// Add an AJAX handler for deleting a single ticket
-add_action('wp_ajax_delete_single_vaccination', 'delete_single_vaccination');
-function delete_single_vaccination()
+function update_ticket_status()
 {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'custom_vaccination_plugin';
-
-    // Get the ticket ID from the AJAX request
-    $ticket_id = isset($_POST['ticket_id']) ? intval($_POST['ticket_id']) : 0;
-
-    if ($ticket_id) {
-        // Delete the ticket
-        $deleted = $wpdb->delete($table_name, ['id' => $ticket_id]);
-
-        if ($deleted) {
-            wp_send_json_success(['message' => 'Ticket deleted successfully.']);
-        } else {
-            wp_send_json_error(['message' => 'Failed to delete ticket.']);
-        }
-    } else {
-        wp_send_json_error(['message' => 'Invalid ticket ID.']);
+    // Verify nonce for security
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'my-ajax-nonce')) {
+        wp_send_json_error('Invalid nonce');
+        wp_die();
     }
 
-    wp_die();
-}
-
-// Register AJAX action for updating ticket status
-add_action('wp_ajax_update_vaccination_status', 'update_vaccination_status');
-function update_vaccination_status()
-{
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'custom_vaccination_plugin';
-
+    // Get and sanitize inputs
     $ticket_id = isset($_POST['ticket_id']) ? intval($_POST['ticket_id']) : 0;
-    $status = isset($_POST['status']) ? intval($_POST['status']) : null;
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
 
-    if ($ticket_id && $status !== null) {
-        $updated = $wpdb->update(
-            $table_name,
-            ['paymentStatus' => $status],
-            ['id' => $ticket_id],
-            ['%d'],
-            ['%d']
-        );
-
-        if ($updated !== false) {
-            wp_send_json_success(['message' => 'Status updated successfully.']);
-        } else {
-            wp_send_json_error(['message' => 'Failed to update status.']);
-        }
-    } else {
-        wp_send_json_error(['message' => 'Invalid data provided.']);
+    if (!$ticket_id || $status === '') {
+        wp_send_json_error('Invalid ticket ID or status.');
+        wp_die();
     }
 
-    wp_die();
+    // Perform the status update (replace 'your_table_name' with the actual table name)
+    global $wpdb;
+    $updated = $wpdb->update(
+        "{$wpdb->prefix}custom_vaccination_plugin", // Your table
+        array('paymentStatus' => $status),      // Data to update
+        array('id' => $ticket_id),       // Where clause
+        array('%s'),                     // Data format
+        array('%d')                      // Where clause format
+    );
+
+    if ($updated !== false) {
+        wp_send_json_success('Status updated successfully.');
+    } else {
+        wp_send_json_error('Failed to update status.');
+    }
+
+    wp_die(); // Always end AJAX functions with wp_die()
 }
+add_action('wp_ajax_update_ticket_status', 'update_ticket_status');
+
+
+function delete_ticket()
+{
+    // Verify nonce
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'my-ajax-nonce')) {
+        wp_send_json_error('Invalid nonce');
+        wp_die();
+    }
+
+    // Get and sanitize ticket ID
+    $ticket_id = isset($_POST['ticket_id']) ? intval($_POST['ticket_id']) : 0;
+
+    if (!$ticket_id) {
+        wp_send_json_error('Invalid ticket ID.');
+        wp_die();
+    }
+
+    global $wpdb;
+    $deleted = $wpdb->delete(
+        "{$wpdb->prefix}custom_vaccination_plugin", // Your table
+        array('id' => $ticket_id),        // Where clause
+        array('%d')                       // Where clause format
+    );
+
+    if ($deleted) {
+        wp_send_json_success('Ticket deleted successfully.');
+    } else {
+        wp_send_json_error('Failed to delete ticket.');
+    }
+
+    wp_die(); // End AJAX function
+}
+add_action('wp_ajax_delete_ticket', 'delete_ticket');
 
 
 add_action('init', 'cts_vaccs_register_locations');

@@ -16,7 +16,7 @@ function custom_plugin_page()
 
     if ($results) { ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline">Submitted Tickets</h1>
+            <h1 class="wp-heading-inline">Submitted Bookings</h1>
             <table class="wp-list-table widefat fixed striped" style="border-collapse: separate; border-spacing: 0;">
                 <thead>
                     <tr>

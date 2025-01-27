@@ -10,57 +10,72 @@
     $('input[name="ticket[]"]').prop("checked", this.checked);
   });
 
-  // Delete Specific row
 
-  $("#deletThisTicket").on("click", function () {
-    var rowId = $(this).attr("row-id");
 
-    if (confirm("Are you sure you want to delete this ticket?")) {
-      $.post(
-        ajax_variables.ajax_url,
-        {
-          action: "delete_single_ticket",
-          ticket_id: rowId,
-          nonce: ajax_variables.nonce,
-        },
-        function (response) {
-          if (response.success) {
-            alert(response.data.message);
-            location.reload(); // Reload the page to refresh the list
-          } else {
-            alert(response.data.message);
-          }
-        }
-      );
-    }
-  });
+  $('.save-status-ticket').on('click', function () {
+    const ticketId = $(this).attr('row-id');
+    const newStatus = $(`#ticketStatus-${ticketId}`).val();
 
-  // Event listener for the Save Status button
-  $(".save-status-ticket").on("click", function () {
-    var rowId = $(this).attr("row-id");
-    var selectedStatus = $("#ticketStatus-" + rowId).val();
-
-    if (selectedStatus === null) {
-      alert("Please select a status before saving.");
+    if (!newStatus) {
+      alert('Please select a status before saving.');
       return;
     }
 
-    $.post(
-      ajax_variables.ajax_url,
-      {
-        action: "update_ticket_status",
-        ticket_id: rowId,
-        status: selectedStatus,
-        nonce: ajax_variables.nonce,
+    // AJAX request
+    $.ajax({
+      url: ajax_variables.ajax_url, // Use localized `ajax_url` from wp_localize_script
+      type: 'POST',
+      data: {
+        action: 'update_ticket_status', // Action name defined in PHP
+        ticket_id: ticketId,
+        status: newStatus,
+        security: ajax_variables.nonce // Use a nonce for security
       },
-      function (response) {
+      success: function (response) {
+        // console.log("Response: ", response);
         if (response.success) {
-          alert(response.data.message);
+          alert('Status updated successfully.');
           location.reload();
         } else {
-          alert(response.data.message);
+          alert('Error updating status: ' + response.data);
         }
+      },
+      error: function () {
+        alert('An error occurred while updating the status.');
       }
-    );
+    });
   });
+
+
+
+  $(document.body).on('click', '#deletThisTicket', function () {
+    const ticketId = $(this).attr('row-id');
+
+    if (!confirm('Are you sure you want to delete this ticket?')) return;
+
+    // AJAX request
+    $.ajax({
+      url: ajax_variables.ajax_url,
+      type: 'POST',
+      data: {
+        action: 'delete_ticket',
+        ticket_id: ticketId,
+        security: ajax_variables.nonce,
+      },
+      success: function (response) {
+        if (response.success) {
+          alert('Ticket deleted successfully.');
+          location.reload();
+        } else {
+          alert('Error deleting ticket: ' + response.data);
+        }
+      },
+      error: function () {
+        alert('An error occurred while deleting the ticket.');
+      }
+    });
+  });
+
+
+
 })(jQuery);
