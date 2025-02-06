@@ -226,39 +226,41 @@ function render_days_time_range_meta_box($post)
 
     wp_nonce_field('save_days_time_range_meta_box', 'days_time_range_nonce');
     ?>
-    <div>
-        <label for="days">Select Days:</label><br>
-        <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
-        Monday
-        <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
-        Tuesday
-        <input type="checkbox" name="days[]" value="wednesday" <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
-        <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
-        Thursday
-        <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
-        Friday
-        <input type="checkbox" name="days[]" value="saturday" <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
-        <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
-        Sunday
-    </div>
+<div>
+    <label for="days">Select Days:</label><br>
+    <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
+    Monday
+    <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
+    Tuesday
+    <input type="checkbox" name="days[]" value="wednesday"
+        <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
+    <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
+    Thursday
+    <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
+    Friday
+    <input type="checkbox" name="days[]" value="saturday"
+        <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
+    <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
+    Sunday
+</div>
 
 
-    <div>
-        <label for="start_time">Start Time:</label>
-        <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
-    </div>
+<div>
+    <label for="start_time">Start Time:</label>
+    <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
+</div>
 
-    <div>
-        <label for="end_time">End Time:</label>
-        <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
-    </div>
+<div>
+    <label for="end_time">End Time:</label>
+    <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
+</div>
 
-    <div>
-        <label for="slot_duration">Slot Duration (minutes):</label>
-        <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
-            required />
-    </div>
-    <?php
+<div>
+    <label for="slot_duration">Slot Duration (minutes):</label>
+    <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
+        required />
+</div>
+<?php
 }
 
 // Save the Meta Box Data
@@ -442,3 +444,43 @@ function fetch_slots()
 
     wp_send_json_success(['slots' => $slots_data]);
 }
+
+
+function acf_related_posts_dropdown_shortcode($atts) {
+    ob_start();
+
+    // Get the current post ID
+    global $post;
+    if (!$post) {
+        return '';
+    }
+
+    // Get related posts from ACF relationship field (Replace 'related_posts' with your field name)
+    $related_posts = get_field('select_location_on_destination', $post->ID);
+
+    if ($related_posts) {
+        ?>
+<select id="acf-related-posts-dropdown" onchange="if(this.value) window.location.href=this.value;">
+    <option value="">Select Destination</option>
+    <?php foreach ($related_posts as $related_post): ?>
+    <option value="<?php echo get_permalink($related_post->ID); ?>">
+        <?php echo esc_html($related_post->post_title); ?>
+    </option>
+    <?php endforeach; ?>
+</select>
+
+<style>
+#acf-related-posts-dropdown {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+</style>
+<?php
+    }
+
+    return ob_get_clean();
+}
+
+// Register shortcode
+add_shortcode('locations_from_destination', 'acf_related_posts_dropdown_shortcode');
