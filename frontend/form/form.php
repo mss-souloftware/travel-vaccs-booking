@@ -264,33 +264,33 @@ function vaccination_frontend()
                                 <div class="formRow">
                                     <div class="formCol">
                                         <label class="fieldlabels">First Name: *</label>
-                                        <input type="text" name="fname" placeholder="First Name" />
+                                        <input type="text" name="fname" placeholder="First Name" required/>
                                     </div>
                                     <div class="formCol">
                                         <label class="fieldlabels">Last Name: *</label>
-                                        <input type="text" name="lname" placeholder="Last Name" />
+                                        <input type="text" name="lname" placeholder="Last Name" required/>
                                     </div>
                                 </div>
                                 <div class="formRow">
                                     <div class="formCol">
                                         <label class="fieldlabels">Email *</label>
-                                        <input type="email" name="email" placeholder="Email" />
+                                        <input type="email" name="email" placeholder="Email" required />
                                     </div>
                                     <div class="formCol">
                                         <label class="fieldlabels">Mobile *</label>
-                                        <input type="number" name="phone" placeholder="Mobile" />
+                                        <input type="number" name="phone" placeholder="Mobile" required />
                                     </div>
                                 </div>
                                 <div class="formRow">
                                     <div class="formCol">
                                         <label class="fieldlabels">
                                             Street Address *</label>
-                                        <input type="text" name="sAddress" placeholder="Street Address" />
+                                        <input type="text" name="sAddress" placeholder="Street Address" required />
                                     </div>
                                     <div class="formCol">
                                         <label class="fieldlabels">
                                             Address Line 2 *</label>
-                                        <input type="text" name="address2" placeholder="Address Line 2" />
+                                        <input type="text" name="address2" placeholder="Address Line 2" required />
                                     </div>
                                 </div>
 
@@ -298,17 +298,17 @@ function vaccination_frontend()
                                     <div class="formColThree">
                                         <label class="fieldlabels">
                                             City *</label>
-                                        <input type="text" name="city" placeholder="City" />
+                                        <input type="text" name="city" placeholder="City" required />
                                     </div>
                                     <div class="formColThree">
                                         <label class="fieldlabels">
                                             Country *</label>
-                                        <input type="text" name="country" placeholder="Country" />
+                                        <input type="text" name="country" placeholder="Country" required />
                                     </div>
                                     <div class="formColThree">
                                         <label class="fieldlabels">
                                             Postal Code *</label>
-                                        <input type="text" name="postal" placeholder="Postal Code" />
+                                        <input type="text" name="postal" placeholder="Postal Code" required />
                                     </div>
                                 </div>
 
