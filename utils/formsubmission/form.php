@@ -6,23 +6,34 @@
  * 
  */
 
-function submit_vaccination_form() {
+function submit_vaccination_form()
+{
     check_ajax_referer('my-ajax-nonce', 'nonce');
 
     global $wpdb;
-    $table_name = $wpdb->prefix . 'custom_ticket_plugin';
+    $table_name = $wpdb->prefix . 'custom_vaccination_plugin';
 
     // Sanitize and prepare form data
     $data = [
-        'task'    => sanitize_text_field($_POST['task']),
-        'selectedDate'    => sanitize_text_field($_POST['date']),
-        'selectedTime'    => sanitize_text_field($_POST['time']),
-        'userAddress' => sanitize_text_field($_POST['address']),
-        'email'   => sanitize_email($_POST['email']),
-        'phone'   => sanitize_text_field($_POST['phone']),
+        'vccsType' => sanitize_text_field($_POST['vccsType']),
+        'adults' => sanitize_text_field($_POST['adults']),
+        'locationId' => intval($_POST['locationId']),
+        'schedule' => sanitize_text_field($_POST['schedule']),
+        'fname' => sanitize_text_field($_POST['fname']),
+        'lname' => sanitize_text_field($_POST['lname']),
+        'email' => sanitize_email($_POST['email']),
+        'phone' => intval($_POST['phone']),
+        'sAddress' => sanitize_text_field($_POST['sAddress']),
+        'address2' => sanitize_text_field($_POST['address2']),
+        'city' => sanitize_text_field($_POST['city']),
+        'country' => sanitize_text_field($_POST['country']),
+        'postal' => sanitize_text_field($_POST['postal']),
+        'comment' => sanitize_textarea_field($_POST['comment']),
+        'paymentStatus' => sanitize_text_field($_POST['submissionStatus']),
+        'nonce' => sanitize_text_field($_POST['nonce']),
     ];
 
-    // Insert data into the existing table
+    // Insert data into the database
     $inserted = $wpdb->insert($table_name, $data);
 
     if ($inserted) {
