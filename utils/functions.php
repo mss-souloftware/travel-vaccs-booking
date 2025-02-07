@@ -226,41 +226,39 @@ function render_days_time_range_meta_box($post)
 
     wp_nonce_field('save_days_time_range_meta_box', 'days_time_range_nonce');
     ?>
-<div>
-    <label for="days">Select Days:</label><br>
-    <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
-    Monday
-    <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
-    Tuesday
-    <input type="checkbox" name="days[]" value="wednesday"
-        <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
-    <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
-    Thursday
-    <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
-    Friday
-    <input type="checkbox" name="days[]" value="saturday"
-        <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
-    <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
-    Sunday
-</div>
+    <div>
+        <label for="days">Select Days:</label><br>
+        <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
+        Monday
+        <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
+        Tuesday
+        <input type="checkbox" name="days[]" value="wednesday" <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
+        <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
+        Thursday
+        <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
+        Friday
+        <input type="checkbox" name="days[]" value="saturday" <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
+        <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
+        Sunday
+    </div>
 
 
-<div>
-    <label for="start_time">Start Time:</label>
-    <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
-</div>
+    <div>
+        <label for="start_time">Start Time:</label>
+        <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
+    </div>
 
-<div>
-    <label for="end_time">End Time:</label>
-    <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
-</div>
+    <div>
+        <label for="end_time">End Time:</label>
+        <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
+    </div>
 
-<div>
-    <label for="slot_duration">Slot Duration (minutes):</label>
-    <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
-        required />
-</div>
-<?php
+    <div>
+        <label for="slot_duration">Slot Duration (minutes):</label>
+        <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
+            required />
+    </div>
+    <?php
 }
 
 // Save the Meta Box Data
@@ -446,7 +444,226 @@ function fetch_slots()
 }
 
 
-function acf_related_posts_dropdown_shortcode($atts) {
+function locations_search_shortcode()
+{
+    // Get all "locations" posts
+    $args = array(
+        'post_type' => 'locations',
+        'posts_per_page' => -1, // Load all locations
+        'post_status' => 'publish',
+    );
+
+    $query = new WP_Query($args);
+    $locations = array();
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $locations[] = array(
+                'id' => get_the_ID(),
+                'title' => get_the_title(),
+                'link' => get_permalink(),
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    ob_start(); ?>
+
+    <input type="text" id="location-search" placeholder="Start typing to find destination" autocomplete="off">
+    <ul id="search-results"></ul>
+
+    <style>
+        #location-search {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #search-results {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            max-width: 100%;
+            position: absolute;
+            z-index: 1000;
+            display: none;
+            /* Initially hidden */
+        }
+
+        #search-results li {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        #search-results li:hover {
+            background: #f0f0f0;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchField = document.getElementById("location-search");
+            const resultsList = document.getElementById("search-results");
+
+            // Load all locations from PHP
+            const locations = <?php echo json_encode($locations); ?>;
+
+            searchField.addEventListener("input", function () {
+                let query = this.value.trim().toLowerCase();
+                resultsList.innerHTML = "";
+
+                if (query.length < 2) {
+                    resultsList.style.display = "none";
+                    return;
+                }
+
+                let matches = locations.filter(location => location.title.toLowerCase().includes(query));
+
+                if (matches.length > 0) {
+                    resultsList.style.display = "block";
+                    matches.forEach(location => {
+                        let listItem = document.createElement("li");
+                        listItem.textContent = location.title;
+                        listItem.onclick = () => window.location.href = location.link;
+                        resultsList.appendChild(listItem);
+                    });
+                } else {
+                    resultsList.style.display = "none";
+                }
+            });
+
+            // Hide results on click outside
+            document.addEventListener("click", function (e) {
+                if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
+                    resultsList.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <?php return ob_get_clean();
+}
+add_shortcode('locations_search', 'locations_search_shortcode');
+
+
+
+function vaccinations_search_shortcode()
+{
+    // Get all "vaccinations" posts
+    $args = array(
+        'post_type' => 'vaccinations',
+        'posts_per_page' => -1, // Load all vaccinations
+        'post_status' => 'publish',
+    );
+
+    $query = new WP_Query($args);
+    $vaccinations = array();
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $vaccinations[] = array(
+                'id' => get_the_ID(),
+                'title' => get_the_title(),
+                'link' => get_permalink(),
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    ob_start(); ?>
+
+    <input type="text" id="vaccination-search" placeholder="Search vaccinations..." autocomplete="off">
+    <ul id="vaccination-results"></ul>
+
+    <style>
+        #vaccination-search {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #vaccination-results {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            max-width: 100%;
+            position: absolute;
+            z-index: 1000;
+            display: none;
+            /* Initially hidden */
+        }
+
+        #vaccination-results li {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        #vaccination-results li:hover {
+            background: #f0f0f0;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchField = document.getElementById("vaccination-search");
+            const resultsList = document.getElementById("vaccination-results");
+
+            // Load all vaccinations from PHP
+            const vaccinations = <?php echo json_encode($vaccinations); ?>;
+
+            searchField.addEventListener("input", function () {
+                let query = this.value.trim().toLowerCase();
+                resultsList.innerHTML = "";
+
+                if (query.length < 2) {
+                    resultsList.style.display = "none";
+                    return;
+                }
+
+                let matches = vaccinations.filter(vaccination => vaccination.title.toLowerCase().includes(query));
+
+                if (matches.length > 0) {
+                    resultsList.style.display = "block";
+                    matches.forEach(vaccination => {
+                        let listItem = document.createElement("li");
+                        listItem.textContent = vaccination.title;
+                        listItem.onclick = () => window.location.href = vaccination.link;
+                        resultsList.appendChild(listItem);
+                    });
+                } else {
+                    resultsList.style.display = "none";
+                }
+            });
+
+            // Hide results on click outside
+            document.addEventListener("click", function (e) {
+                if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
+                    resultsList.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <?php return ob_get_clean();
+}
+add_shortcode('vaccinations_search', 'vaccinations_search_shortcode');
+
+
+
+function acf_related_posts_dropdown_shortcode($atts)
+{
     ob_start();
 
     // Get the current post ID
@@ -460,23 +677,23 @@ function acf_related_posts_dropdown_shortcode($atts) {
 
     if ($related_posts) {
         ?>
-<select id="acf-related-posts-dropdown" onchange="if(this.value) window.location.href=this.value;">
-    <option value="">Select Destination</option>
-    <?php foreach ($related_posts as $related_post): ?>
-    <option value="<?php echo get_permalink($related_post->ID); ?>">
-        <?php echo esc_html($related_post->post_title); ?>
-    </option>
-    <?php endforeach; ?>
-</select>
+        <select id="acf-related-posts-dropdown" onchange="if(this.value) window.location.href=this.value;">
+            <option value="">Select Destination</option>
+            <?php foreach ($related_posts as $related_post): ?>
+                <option value="<?php echo get_permalink($related_post->ID); ?>">
+                    <?php echo esc_html($related_post->post_title); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
 
-<style>
-#acf-related-posts-dropdown {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 5px;
-}
-</style>
-<?php
+        <style>
+            #acf-related-posts-dropdown {
+                padding: 8px;
+                font-size: 16px;
+                border-radius: 5px;
+            }
+        </style>
+        <?php
     }
 
     return ob_get_clean();
