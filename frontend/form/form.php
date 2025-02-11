@@ -115,7 +115,7 @@ function vaccination_frontend()
                                         <ul>
                                             <?php
                                             $args = array(
-                                                'post_type' => 'locations',
+                                                'post_type' => 'clinics',
                                                 'posts_per_page' => -1,
                                                 'post_status' => 'publish'
                                             );
@@ -321,7 +321,7 @@ function vaccination_frontend()
                             </div>
                             <input type="hidden" name="nonce"
                                 value="<?php echo esc_attr(wp_create_nonce('my-ajax-nonce')); ?>">
-                            <input type="submit" name="next" class="action-button" value="Next" />
+                            <input type="submit" name="next" class="action-button" value="Submit" />
                         </fieldset>
                     </form>
                 </div>

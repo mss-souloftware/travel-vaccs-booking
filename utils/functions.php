@@ -162,6 +162,40 @@ function cts_vaccs_register_locations()
     register_post_type('locations', $args);
 }
 
+add_action('init', 'cts_vaccs_register_clinics');
+function cts_vaccs_register_clinics()
+{
+    $labels = [
+        'name' => 'Clinics',
+        'singular_name' => 'Clinic',
+        'menu_name' => 'Clinics',
+        'name_admin_bar' => 'Clinic',
+        'add_new' => 'Add New',
+        'add_new_item' => 'Add New Clinic',
+        'edit_item' => 'Edit Clinic',
+        'view_item' => 'View Clinic',
+        'all_items' => 'All Clinics',
+        'search_items' => 'Search Clinics',
+        'not_found' => 'No clinics found.',
+        'not_found_in_trash' => 'No clinics found in Trash.',
+    ];
+
+    $args = [
+        'labels' => $labels,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'show_in_menu' => false, // Hides from the main admin menu
+        'query_var' => true,
+        'rewrite' => ['slug' => 'clinics'],
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'],
+    ];
+
+    register_post_type('clinics', $args);
+}
 
 function custom_plugin_menu()
 {
@@ -186,6 +220,15 @@ function custom_plugin_menu()
 
     add_submenu_page(
         'cts-vaccs',
+        'Manage Clinics',
+        'Clinics',
+        'manage_options',
+        'edit.php?post_type=clinics',
+        null
+    );
+
+    add_submenu_page(
+        'cts-vaccs',
         'Settings',
         'Settings',
         'manage_options',
@@ -193,6 +236,9 @@ function custom_plugin_menu()
         'custom_plugin_settings'
     );
 }
+
+add_action('admin_menu', 'custom_plugin_menu');
+
 
 
 // Add Meta Box to Locations Post Type
@@ -203,7 +249,7 @@ function add_days_time_range_meta_box()
         'days_time_range_meta_box',  // ID
         'Time Slots Settings',       // Title
         'render_days_time_range_meta_box', // Callback
-        'locations',                 // Post type
+        'clinics',                 // Post type
         'normal',                    // Context
         'default'                    // Priority
     );
@@ -226,39 +272,41 @@ function render_days_time_range_meta_box($post)
 
     wp_nonce_field('save_days_time_range_meta_box', 'days_time_range_nonce');
     ?>
-    <div>
-        <label for="days">Select Days:</label><br>
-        <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
-        Monday
-        <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
-        Tuesday
-        <input type="checkbox" name="days[]" value="wednesday" <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
-        <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
-        Thursday
-        <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
-        Friday
-        <input type="checkbox" name="days[]" value="saturday" <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
-        <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
-        Sunday
-    </div>
+<div>
+    <label for="days">Select Days:</label><br>
+    <input type="checkbox" name="days[]" value="monday" <?php echo in_array('monday', $days) ? 'checked' : ''; ?> />
+    Monday
+    <input type="checkbox" name="days[]" value="tuesday" <?php echo in_array('tuesday', $days) ? 'checked' : ''; ?> />
+    Tuesday
+    <input type="checkbox" name="days[]" value="wednesday"
+        <?php echo in_array('wednesday', $days) ? 'checked' : ''; ?> /> Wednesday
+    <input type="checkbox" name="days[]" value="thursday" <?php echo in_array('thursday', $days) ? 'checked' : ''; ?> />
+    Thursday
+    <input type="checkbox" name="days[]" value="friday" <?php echo in_array('friday', $days) ? 'checked' : ''; ?> />
+    Friday
+    <input type="checkbox" name="days[]" value="saturday"
+        <?php echo !in_array('saturday', $days) ? '' : 'checked'; ?> /> Saturday
+    <input type="checkbox" name="days[]" value="sunday" <?php echo !in_array('sunday', $days) ? '' : 'checked'; ?> />
+    Sunday
+</div>
 
 
-    <div>
-        <label for="start_time">Start Time:</label>
-        <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
-    </div>
+<div>
+    <label for="start_time">Start Time:</label>
+    <input type="time" id="start_time" name="start_time" value="<?php echo esc_attr($start_time); ?>" required />
+</div>
 
-    <div>
-        <label for="end_time">End Time:</label>
-        <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
-    </div>
+<div>
+    <label for="end_time">End Time:</label>
+    <input type="time" id="end_time" name="end_time" value="<?php echo esc_attr($end_time); ?>" required />
+</div>
 
-    <div>
-        <label for="slot_duration">Slot Duration (minutes):</label>
-        <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
-            required />
-    </div>
-    <?php
+<div>
+    <label for="slot_duration">Slot Duration (minutes):</label>
+    <input type="number" id="slot_duration" name="slot_duration" value="<?php echo esc_attr($slot_duration); ?>" min="1"
+        required />
+</div>
+<?php
 }
 
 // Save the Meta Box Data
@@ -368,7 +416,7 @@ function fetch_slots()
     $location_id = intval($_POST['location_id']);
     $post = get_post($location_id);
 
-    if (!$post || $post->post_type !== 'locations') {
+    if (!$post || $post->post_type !== 'clinics') {
         wp_send_json_error(['message' => 'Invalid location ID.']);
     }
 
@@ -470,84 +518,84 @@ function locations_search_shortcode()
 
     ob_start(); ?>
 
-    <input type="text" id="location-search" placeholder="Start typing to find destination" autocomplete="off">
-    <ul id="search-results"></ul>
+<input type="text" id="location-search" placeholder="Start typing to find destination" autocomplete="off">
+<ul id="search-results"></ul>
 
-    <style>
-        #location-search {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+<style>
+#location-search {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#search-results {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    max-width: 100%;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    /* Initially hidden */
+}
+
+#search-results li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#search-results li:hover {
+    background: #f0f0f0;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchField = document.getElementById("location-search");
+    const resultsList = document.getElementById("search-results");
+
+    // Load all locations from PHP
+    const locations = <?php echo json_encode($locations); ?>;
+
+    searchField.addEventListener("input", function() {
+        let query = this.value.trim().toLowerCase();
+        resultsList.innerHTML = "";
+
+        if (query.length < 2) {
+            resultsList.style.display = "none";
+            return;
         }
 
-        #search-results {
-            list-style: none;
-            padding: 0;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #fff;
-            max-width: 100%;
-            position: absolute;
-            z-index: 1000;
-            display: none;
-            /* Initially hidden */
-        }
+        let matches = locations.filter(location => location.title.toLowerCase().includes(query));
 
-        #search-results li {
-            padding: 8px;
-            cursor: pointer;
-        }
-
-        #search-results li:hover {
-            background: #f0f0f0;
-        }
-    </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchField = document.getElementById("location-search");
-            const resultsList = document.getElementById("search-results");
-
-            // Load all locations from PHP
-            const locations = <?php echo json_encode($locations); ?>;
-
-            searchField.addEventListener("input", function () {
-                let query = this.value.trim().toLowerCase();
-                resultsList.innerHTML = "";
-
-                if (query.length < 2) {
-                    resultsList.style.display = "none";
-                    return;
-                }
-
-                let matches = locations.filter(location => location.title.toLowerCase().includes(query));
-
-                if (matches.length > 0) {
-                    resultsList.style.display = "block";
-                    matches.forEach(location => {
-                        let listItem = document.createElement("li");
-                        listItem.textContent = location.title;
-                        listItem.onclick = () => window.location.href = location.link;
-                        resultsList.appendChild(listItem);
-                    });
-                } else {
-                    resultsList.style.display = "none";
-                }
+        if (matches.length > 0) {
+            resultsList.style.display = "block";
+            matches.forEach(location => {
+                let listItem = document.createElement("li");
+                listItem.textContent = location.title;
+                listItem.onclick = () => window.location.href = location.link;
+                resultsList.appendChild(listItem);
             });
+        } else {
+            resultsList.style.display = "none";
+        }
+    });
 
-            // Hide results on click outside
-            document.addEventListener("click", function (e) {
-                if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
-                    resultsList.style.display = "none";
-                }
-            });
-        });
-    </script>
+    // Hide results on click outside
+    document.addEventListener("click", function(e) {
+        if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
+            resultsList.style.display = "none";
+        }
+    });
+});
+</script>
 
-    <?php return ob_get_clean();
+<?php return ob_get_clean();
 }
 add_shortcode('locations_search', 'locations_search_shortcode');
 
@@ -579,84 +627,85 @@ function vaccinations_search_shortcode()
 
     ob_start(); ?>
 
-    <input type="text" id="vaccination-search" placeholder="Search vaccinations..." autocomplete="off">
-    <ul id="vaccination-results"></ul>
+<input type="text" id="vaccination-search" placeholder="Search vaccinations..." autocomplete="off">
+<ul id="vaccination-results"></ul>
 
-    <style>
-        #vaccination-search {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+<style>
+#vaccination-search {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#vaccination-results {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    max-width: 100%;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    /* Initially hidden */
+}
+
+#vaccination-results li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#vaccination-results li:hover {
+    background: #f0f0f0;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchField = document.getElementById("vaccination-search");
+    const resultsList = document.getElementById("vaccination-results");
+
+    // Load all vaccinations from PHP
+    const vaccinations = <?php echo json_encode($vaccinations); ?>;
+
+    searchField.addEventListener("input", function() {
+        let query = this.value.trim().toLowerCase();
+        resultsList.innerHTML = "";
+
+        if (query.length < 2) {
+            resultsList.style.display = "none";
+            return;
         }
 
-        #vaccination-results {
-            list-style: none;
-            padding: 0;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #fff;
-            max-width: 100%;
-            position: absolute;
-            z-index: 1000;
-            display: none;
-            /* Initially hidden */
-        }
+        let matches = vaccinations.filter(vaccination => vaccination.title.toLowerCase().includes(
+            query));
 
-        #vaccination-results li {
-            padding: 8px;
-            cursor: pointer;
-        }
-
-        #vaccination-results li:hover {
-            background: #f0f0f0;
-        }
-    </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchField = document.getElementById("vaccination-search");
-            const resultsList = document.getElementById("vaccination-results");
-
-            // Load all vaccinations from PHP
-            const vaccinations = <?php echo json_encode($vaccinations); ?>;
-
-            searchField.addEventListener("input", function () {
-                let query = this.value.trim().toLowerCase();
-                resultsList.innerHTML = "";
-
-                if (query.length < 2) {
-                    resultsList.style.display = "none";
-                    return;
-                }
-
-                let matches = vaccinations.filter(vaccination => vaccination.title.toLowerCase().includes(query));
-
-                if (matches.length > 0) {
-                    resultsList.style.display = "block";
-                    matches.forEach(vaccination => {
-                        let listItem = document.createElement("li");
-                        listItem.textContent = vaccination.title;
-                        listItem.onclick = () => window.location.href = vaccination.link;
-                        resultsList.appendChild(listItem);
-                    });
-                } else {
-                    resultsList.style.display = "none";
-                }
+        if (matches.length > 0) {
+            resultsList.style.display = "block";
+            matches.forEach(vaccination => {
+                let listItem = document.createElement("li");
+                listItem.textContent = vaccination.title;
+                listItem.onclick = () => window.location.href = vaccination.link;
+                resultsList.appendChild(listItem);
             });
+        } else {
+            resultsList.style.display = "none";
+        }
+    });
 
-            // Hide results on click outside
-            document.addEventListener("click", function (e) {
-                if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
-                    resultsList.style.display = "none";
-                }
-            });
-        });
-    </script>
+    // Hide results on click outside
+    document.addEventListener("click", function(e) {
+        if (!searchField.contains(e.target) && !resultsList.contains(e.target)) {
+            resultsList.style.display = "none";
+        }
+    });
+});
+</script>
 
-    <?php return ob_get_clean();
+<?php return ob_get_clean();
 }
 add_shortcode('vaccinations_search', 'vaccinations_search_shortcode');
 
@@ -677,23 +726,23 @@ function acf_related_posts_dropdown_shortcode($atts)
 
     if ($related_posts) {
         ?>
-        <select id="acf-related-posts-dropdown" onchange="if(this.value) window.location.href=this.value;">
-            <option value="">Select Destination</option>
-            <?php foreach ($related_posts as $related_post): ?>
-                <option value="<?php echo get_permalink($related_post->ID); ?>">
-                    <?php echo esc_html($related_post->post_title); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+<select id="acf-related-posts-dropdown" onchange="if(this.value) window.location.href=this.value;">
+    <option value="">Select Destination</option>
+    <?php foreach ($related_posts as $related_post): ?>
+    <option value="<?php echo get_permalink($related_post->ID); ?>">
+        <?php echo esc_html($related_post->post_title); ?>
+    </option>
+    <?php endforeach; ?>
+</select>
 
-        <style>
-            #acf-related-posts-dropdown {
-                padding: 8px;
-                font-size: 16px;
-                border-radius: 5px;
-            }
-        </style>
-        <?php
+<style>
+#acf-related-posts-dropdown {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+</style>
+<?php
     }
 
     return ob_get_clean();
